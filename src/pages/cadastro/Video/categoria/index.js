@@ -26,7 +26,9 @@ function CadastroCategoria() {
     );
   }
   useEffect(() => {
-    const URL = 'https://lucas-flixer.herokuapp.com/categorias';
+    const URL = window.location.hostname.includes('localhost')
+      ? 'http://localhost:8080/categorias'
+      : 'https://lucas-flixer.herokuapp.com/categorias';
     // eslint-disable-next-line max-len
     fetch(URL)// procure a "URL", entao, espere pela resposta(que sao as categorias q estao na URL) do servidor.json() e mande essa resposta para a categoria
       .then(async (resServ) => {
