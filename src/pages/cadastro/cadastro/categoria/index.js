@@ -3,28 +3,19 @@ import { Link } from 'react-router-dom';
 import PageDefault from '../../../../componentes/PageDefault';
 import FormField from '../../../../componentes/FormField';
 import Button from '../../../../componentes/Button';
+import useForm from '../../../../hooks/useForm';
 
 function CadastroCategoria() {
   const valoresIniciais = {
-    nome: '',
+    titulo: '',
     descricao: '',
     cor: '',
   };
-  const [values, setValues] = useState(valoresIniciais);
+
+  const { handleChange, values, clearForm } = useForm(valoresIniciais);
+
   const [categorias, setCategorias] = useState([]);
 
-  function setValue(key, value) {
-    setValues({
-      ...values,
-      [key]: value,
-    });
-  }
-  function handleChange(e) {
-    setValue(
-      e.target.getAttribute('name'),
-      e.target.value,
-    );
-  }
   useEffect(() => {
     const URL = window.location.hostname.includes('localhost')
       ? 'http://localhost:8080/categorias'
@@ -43,7 +34,7 @@ function CadastroCategoria() {
     <PageDefault>
       <h1>
         Cadastro Categorias:
-        {values.nome}
+        {values.titulo}
         {' '}
 
       </h1>
@@ -53,17 +44,17 @@ function CadastroCategoria() {
           ...categorias,
           values,
         ]);
-
-        setValues(valoresIniciais);
+        clearForm();
       }}
       >
         <FormField
           label="Nome da categoria"
-          value={values.nome}
+          value={values.titulo}
           type="text"
-          name="nome"
+          name="titulo"
           onChange={handleChange}
         />
+
         <FormField
           label="Descrição"
           value={values.descricao}
@@ -90,11 +81,13 @@ function CadastroCategoria() {
       )}
 
       <ul>
-        {categorias.map((categoria) => (
-          <li key={`${categoria.nome}`}>
-            {categoria.nome}
-          </li>
-        ))}
+        {/* eslint-disable-next-line array-callback-return */}
+        {categorias.map((categoria) => {
+          // eslint-disable-next-line no-unused-expressions
+          <li key={`${categoria.titulo}`}>
+            {categoria.titulo}
+          </li>;
+        })}
       </ul>
       <Link to="/">
         Ir para a Home
